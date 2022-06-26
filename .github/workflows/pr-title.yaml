@@ -1,8 +1,17 @@
-name: Lint PR
+name: pull_request
 # https://github.com/marketplace/actions/semantic-pull-request
 
 # This Action ensures that Pullrequests create correct squash commit
 # messages on master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  # packages: write
+  # issues: write
 
 on:
   pull_request:
@@ -17,12 +26,23 @@ on:
       - master
 
 jobs:
-  validate_pr_title:
+  validate_title:
+    defaults:
+      run:
+        shell: bash
+
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          yarn add @commitlint/config-nx-scopes
-      - run: |
-          npx commitlint
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup-asdf
+      - name: Nodejs
+        uses: ./.github/actions/setup-nodejs
+      - name: Golang
+        uses: ./.github/actions/setup-golang
+
+      - uses: JulienKode/pull-request-name-linter-action@v0.4.0

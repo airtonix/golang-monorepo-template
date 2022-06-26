@@ -1,12 +1,21 @@
-name: Generate Realease Candidate Changelogs
+name: Release
 
 on:
   push:
     branches:
       - master
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  # packages: write
+  # issues: write
+
 jobs:
-  changeFinder:
+  findChanges:
     runs-on: ubuntu-latest
 
     outputs:
@@ -14,6 +23,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup
+        uses: ./.github/actions/setup-asdf
+      - name: Nodejs
+        uses: ./.github/actions/setup-nodejs
+      - name: Golang
+        uses: ./.github/actions/setup-golang
+
       - id: interrogate
         uses: actions/github-script@v4
         with:
@@ -41,15 +60,15 @@ jobs:
             nodePaths = Array.from(nodePaths);
             console.log(`::set-output name=nodePaths::${JSON.stringify(nodePaths)}`);
 
-  release-please-release:
+  Process:
     runs-on: ubuntu-latest
 
-    needs: changeFinder
+    needs: findChanges
 
     strategy:
       fail-fast: false
       matrix:
-        package: ${{fromJson(needs.changeFinder.outputs.nodePaths)}}
+        package: ${{fromJson(needs.findChanges.outputs.nodePaths)}}
 
     steps:
       - uses: google-github-actions/release-please-action@v3
@@ -70,12 +89,12 @@ jobs:
   release-pr:
     runs-on: ubuntu-latest
     needs:
-      - changeFinder
+      - findChanges
       - release-please-release
     strategy:
       fail-fast: false
       matrix:
-        package: ${{fromJson(needs.changeFinder.outputs.nodePaths)}}
+        package: ${{fromJson(needs.findChanges.outputs.nodePaths)}}
     steps:
       - uses: google-github-actions/release-please-action@v3
         id: release-please

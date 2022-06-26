@@ -1,0 +1,25 @@
+name: Setup Golang
+
+description: provisions tooling and installs dependancies
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Get GO cache directory path
+      id: go-cache-dir-path
+      run: echo "::set-output name=dir::$(go env GOCACHE)"
+      shell: bash
+
+    - uses: actions/cache@v3
+      id: go-cache
+      with:
+        path: ${{ steps.go-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+
+    - name: Install go deps
+      shell: bash
+      run: go get .
+      if: steps.go-cache.outputs.cache-hit != 'true'

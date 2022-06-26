@@ -1,0 +1,27 @@
+name: Setup Nodejs
+
+description: provisions tooling and installs dependancies
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      shell: bash
+      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+
+    - uses: actions/cache@v3
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    #
+    # Install things sensitive to the lockfile
+    #  - only runs if we had a cache miss from previous step
+    - name: pnpm install
+      shell: bash
+      run: yarn install --immutable
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
