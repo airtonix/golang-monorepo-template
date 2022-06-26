@@ -1,0 +1,28 @@
+name: Lint PR
+# https://github.com/marketplace/actions/semantic-pull-request
+
+# This Action ensures that Pullrequests create correct squash commit
+# messages on master
+
+on:
+  pull_request:
+    types:
+      - assigned
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+    branches:
+      - develop
+      - master
+
+jobs:
+  validate_pr_title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          yarn add @commitlint/config-nx-scopes
+      - run: |
+          npx commitlint
