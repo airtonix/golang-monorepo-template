@@ -21,5 +21,5 @@ runs:
 
     - name: Install go deps
       shell: bash
-      run: go get .
+      run: go mod vendor
       if: steps.go-cache.outputs.cache-hit != 'true'

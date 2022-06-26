@@ -17,8 +17,6 @@ A Golang monorepo using nx.dev
 
 ```shell
 $ just help
-
-$ just app one help
 ```
 
 # Development
@@ -27,11 +25,8 @@ $ just app one help
 ## Running Apps
 
 ```shell
-$ just app one dev
+$ just serve one
 ```
-
-- uses the `app` command in the root `Justfile` 
-- calls the `dev` command in the `apps/one/Justfile`
 
 ## Generating Apps
 
