@@ -3,3 +3,4 @@ just 1.2.0
 goreleaser 1.9.2
 golangci-lint 1.46.2
 bazel 5.2.0
+act 0.2.28
