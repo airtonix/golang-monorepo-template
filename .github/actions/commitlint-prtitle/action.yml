@@ -1,0 +1,52 @@
+name: Lint Pull Request Titles
+
+description: Ensures pull request titles match the conventional changelog format
+
+inputs:
+  InstallCommitLint:
+    description: Should we install commit lint for you?
+    required: false
+    default: 'yes'
+  Packages:
+    description: extra packages to install
+    required: false
+  HelpUrl:
+    description: extra packages to install
+    required: false
+    default: 'https://github.com/conventional-changelog/commitlint/#what-is-commitlint'
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Install Commitlint
+      shell: bash
+      if: inputs.InstallCommitLint == 'yes'
+      env:
+        COMMITLINT_PACKAGES: ${{ inputs.Packages }}
+      run: |
+        npm i -g @commitlint/cli ${COMMITLINT_PACKAGES}
+
+    - name: Lint PR Title
+      shell: bash
+      id: pr-title-lint
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        COMMITLINT_HELPURL: ${{ inputs.HelpUrl }}
+      run: |
+        echo "${PR_TITLE}" | npx commitlint --help-url="${COMMITLINT_HELPURL}" > ./LINT_ERRORS
+
+    - name: Add/Update Help Comment
+      if: failure() && steps.pr-title-lint.outcome == 'failure'
+      uses: marocchino/sticky-pull-request-comment@4a1c39f7d63018e91625b5f89bc205fcbbf70259
+      with:
+        header: Add/Update Help Comment
+        path: ./LINT_ERRORS
+        recreate: true
+
+    - name: Remove Help Comment
+      if: success() && steps.pr-title-lint.outcome == 'success'
+      uses: marocchino/sticky-pull-request-comment@4a1c39f7d63018e91625b5f89bc205fcbbf70259
+      with:
+        header: Add/Update Help Comment
+        delete: true

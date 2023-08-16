@@ -1519,6 +1519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octokit/webhooks-definitions@npm:3.67.3":
+  version: 3.67.3
+  resolution: "@octokit/webhooks-definitions@npm:3.67.3"
+  checksum: eeaab7562f0cfe5933183d91819257a8a4cddd62e1c12b8d3265e8ba597227ef9b105c569dec0e617f1c58537af0bd5e69337b623307d11fdcf94140e0b7f129
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher@npm:2.0.4":
   version: 2.0.4
   resolution: "@parcel/watcher@npm:2.0.4"
@@ -1691,6 +1698,13 @@ __metadata:
   version: 1.0.3
   resolution: "@tsconfig/node16@npm:1.0.3"
   checksum: 3a8b657dd047495b7ad23437d6afd20297ce90380ff0bdee93fc7d39a900dbd8d9e26e53ff6b465e7967ce2adf0b218782590ce9013285121e6a5928fbd6819f
+  languageName: node
+  linkType: hard
+
+"@typed-actions/github-script@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@typed-actions/github-script@npm:1.0.1"
+  checksum: 37cee2eb47f7d78a2c30e6fe493490b206b36df74013ca8320361e6d39333945a4400e153812281c297d1d245768ea4d8b906c752052540cefda1e2e7188c692
   languageName: node
   linkType: hard
 
@@ -4065,6 +4079,8 @@ __metadata:
     "@nrwl/nx-cloud": latest
     "@nrwl/workspace": 14.3.6
     "@nx-go/nx-go": ^2.5.0
+    "@octokit/webhooks-definitions": 3.67.3
+    "@typed-actions/github-script": 1.0.1
     nx: 14.3.6
     prettier: ^2.6.2
     release-please: ^13.18.5

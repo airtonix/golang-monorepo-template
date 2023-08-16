@@ -1,0 +1,30 @@
+name: Setup Service Bot as Committer
+
+description: Changes the commit author to the Service Bot
+
+inputs:
+  Email:
+    description: The email address that is used to author commits
+    required: true
+  Name:
+    description: The name that is used to author commits
+    required: true
+
+runs:
+  using: "composite"
+
+
+  steps:
+
+    - name: Setup service bot git
+      shell: bash
+      env:
+        BOT_EMAIL: ${{ inputs.Email }}
+        BOT_NAME: ${{ inputs.Name }}
+      run: |
+        git config --local user.email "${BOT_EMAIL}";
+        git config --local user.name "${BOT_NAME}";
+        echo "GIT_AUTHOR_EMAIL=${{BOT_EMAIL}}" >> $GITHUB_ENV;
+        echo "GIT_AUTHOR_NAME=${{BOT_NAME}}" >> $GITHUB_ENV;
+        echo "GIT_COMMITTER_EMAIL=${{BOT_EMAIL}}" >> $GITHUB_ENV;
+        echo "GIT_COMMITTER_NAME=${{BOT_NAME}}" >> $GITHUB_ENV;

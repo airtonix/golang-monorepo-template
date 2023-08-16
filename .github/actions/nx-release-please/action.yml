@@ -1,0 +1,46 @@
+name: List Changed NX Projects for Release Please
+
+description: Discover changed nxdev projects betweem now and last release tag or last commit
+
+inputs:
+  WorkspaceJsonFilePath:
+    description: "Workspace json file path"
+    required: true
+  GithubRepository:
+    description: "Github repository"
+    required: true
+  GithubToken:
+    description: "Github token"
+    required: true
+
+outputs:
+  ChangedProjects:
+    description: "Changed projects"
+    value: ${{ steps.changed-projects.outputs.result }}
+
+runs:
+  using: "composite"
+
+  steps:
+      - uses: actions/github-script@v6
+        id: changed-projects
+        env:
+          WORKSPACE_JSON_FILE_PATH: ${{ inputs.WorkspaceJsonFilePath }}
+          GITHUB_REPOSITORY: ${{ inputs.GithubRepository }}
+        with:
+          github-token: ${{inputs.GithubToken}}
+          result-encoding: json
+          script: |
+            const script = require('${{github.action_path}}/nx-release-please.js');
+            const githubRepository = process.env.GITHUB_REPOSITORY;
+            const workspaceJsonFilePath = process.env.WORKSPACE_JSON_FILE_PATH;
+
+            return await script({
+              github,
+              context,
+              core,
+              githubRepository,
+              workspaceJsonFilePath
+            })
+
+

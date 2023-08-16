@@ -1,0 +1,29 @@
+name: Setup Os
+
+description: Provisions OS deps
+
+runs:
+  using: "composite"
+
+  steps:
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt update -y -qq
+        sudo apt install  -y -qq \
+          libasound2-dev \
+          libc6-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          libxcursor-dev \
+          libxi-dev \
+          libxinerama-dev \
+          libxrandr-dev \
+          libxxf86vm-dev \
+          pkg-config
+
+    - name: Xvfb
+      shell: bash
+      run: |
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &

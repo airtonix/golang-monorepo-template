@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
+
+#
+# Setup ASDF and Plugins
+#  ASDF_PLUGINS=(nodejs pnpm bats) \
+#  ASDF_PLUGIN_URL_nodejs=https://someurl \
+#  ./pkg/setup-tooling/setup.bash
+#
+
 set -e
 
 [ $(command -v git) ] || {
-  echo "==> 📛📦 Missing git"
+  echo "📛📦 Missing git"
   exit 1
 }
 [ $(command -v curl) ] || {
-  echo "==> 📛📦 Missing curl"
+  echo "📛📦 Missing curl"
   exit 1
 }
 
 # Local vars
-ASDF_VERSION=v0.8.1
+ASDF_VERSION=${ASDF_VERSION:-v0.8.1}
 ASDF_HOME=$HOME/.asdf
 ASDF_BIN=$ASDF_HOME/asdf.sh
 
@@ -20,10 +28,11 @@ ASDF_BIN=$ASDF_HOME/asdf.sh
 #
 append_uniquely() {
   if ! grep -q "$2" "$1"; then
-    echo "==> ✍ Writing \"$2\" into \"$1\" "
+    echo "====> ✍ Writing \"$2\" into \"$1\" "
     echo "${2}" >>$1
   fi
 }
+
 
 case "${SHELL}" in
 /bin/bash)
@@ -36,12 +45,13 @@ case "${SHELL}" in
   ;;
 esac
 
-echo "==> 💁 Install ASDF and plugins"
+echo "=> 💁 [ASDF] install with plugins"
 
 if [ ! -f "$ASDF_BIN" ]; then
-  echo "===> Installing ASDF"
+  echo "===> ⤵️ ASDF not detected ... installing"
   git clone https://github.com/asdf-vm/asdf.git "$ASDF_HOME" --branch $ASDF_VERSION
   [ ! command -v asdf ] &>/dev/null && {
+    echo "====> ⚕️ adding to shell profile"
     append_uniquely "$SHELL_PROFILE" ". $ASDF_HOME/asdf.sh"
     append_uniquely "$SHELL_PROFILE" ". $ASDF_HOME/completions/asdf.bash"
   }
@@ -49,41 +59,32 @@ fi
 
 source "$ASDF_BIN"
 
-if [ -d "$ASDF_HOME/plugins/golang" ]; then
-  echo "===> 🎁 Updating ASDF golang plugin"
-  asdf plugin-update golang
-else
-  echo "===> 📦 Installing ASDF golang plugin"
-  asdf plugin add golang
-fi
+for plugin in $(cut -d' ' -f1 ./.tool-versions)
+do
+  echo "
+==> 💁 [ASDF] Ensure ${plugin} plugin"
 
-if [ -d "$ASDF_HOME/plugins/just" ]; then
-  echo "===> 🎁 Updating ASDF just plugin"
-  asdf plugin-update just
-else
-  echo "===> 📦 Installing ASDF just plugin"
-  asdf plugin add just https://github.com/heliumbrain/asdf-just.git
-fi
+  if [ -d "$ASDF_HOME/plugins/${plugin}" ]; then
+    echo "===> 📦 attempting upgrade"
+    asdf plugin-update "${plugin}"
+  else
+    echo "===> 🌐 installing"
+    plugin_url_var=ASDF_PLUGIN_URL_${plugin//-/_}
+    plugin_url="${!plugin_url_var}"
 
-if [ -d "$ASDF_HOME/plugins/goreleaser" ]; then
-  echo "===> 🎁 Updating ASDF goreleaser plugin"
-  asdf plugin-update goreleaser
-else
-  echo "===> 📦 Installing ASDF goreleaser plugin"
-  asdf plugin-add goreleaser
-fi
+    if [ ${!plugin_url_var+x} ]; then
+      echo "====> 💁 [${plugin}] installed from ${plugin_url}"
+    fi
 
-if [ -d "$ASDF_HOME/plugins/golangci-lint" ]; then
-  echo "===> 🎁 Updating ASDF golangci-lint plugin"
-  asdf plugin-update golangci-lint
-else
-  echo "===> 📦 Installing ASDF golangci-lint plugin"
-  asdf plugin-add golangci-lint
-fi
+    asdf plugin-add "${plugin}" "${plugin_url}"
+  fi
+done
 
-echo "===> Installing build deps with ASDF"
+
+echo "==> 💁 [ASDF] install tools"
 asdf install
 
-go get
-
+echo "==> 💁 [ASDF] reshim globals"
 asdf reshim
+
+echo "==> 💁 [ASDF] Done ✅"

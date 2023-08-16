@@ -8,7 +8,7 @@ runs:
   steps:
     - name: Get GO cache directory path
       id: go-cache-dir-path
-      run: echo "::set-output name=dir::$(go env GOCACHE)"
+      run: echo "dir=$(go env GOCACHE)" >> $GITHUB_OUTPUT
       shell: bash
 
     - uses: actions/cache@v3
@@ -21,5 +21,5 @@ runs:
 
     - name: Install go deps
       shell: bash
-      run: go mod vendor
+      run: go mod download
       if: steps.go-cache.outputs.cache-hit != 'true'

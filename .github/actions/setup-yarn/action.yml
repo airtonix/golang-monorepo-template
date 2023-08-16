@@ -9,7 +9,7 @@ runs:
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       shell: bash
-      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
 
     - uses: actions/cache@v3
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
@@ -21,7 +21,7 @@ runs:
     #
     # Install things sensitive to the lockfile
     #  - only runs if we had a cache miss from previous step
-    - name: pnpm install
+    - name: install
       shell: bash
       run: yarn install --immutable
       if: steps.yarn-cache.outputs.cache-hit != 'true'
