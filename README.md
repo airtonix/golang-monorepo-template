@@ -9,7 +9,7 @@ A Golang monorepo using nx.dev
 # Setup
 
 1. Clone repo
-2. `./setup.sh`
+2. `./setup.sh` (this installs [asdf](https://asdf-vm.com/) and any plugins in `.tool-versions`, then installs the described tools)
 3. `just help`
 
 
