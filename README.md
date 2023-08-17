@@ -22,7 +22,7 @@ $ just help
 # Development
 
 1. get setup ☝️
-2. add deps only to root package.json
+2. add nodejs deps only to root `package.json`
 3. add go deps to individual `go.mod`
 4. run `just pr-check`
 
