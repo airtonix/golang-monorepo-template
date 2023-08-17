@@ -24,7 +24,8 @@ setup:
 version:
     multi-semantic-release --dry-run
 
-
+generate projecttype="lib" name="":
+    nx generate @nx-go/nx-go:{{projecttype}} {{name}}
 
 # build all the things
 build project="affected" *ARGS='':
