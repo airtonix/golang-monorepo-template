@@ -24,4 +24,3 @@ runs:
     - name: install
       shell: bash
       run: yarn install --immutable
-      if: steps.yarn-cache.outputs.cache-hit != 'true'
