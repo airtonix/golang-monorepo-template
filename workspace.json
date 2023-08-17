@@ -6,7 +6,8 @@
     "apps/two": "apps/two",
     "packages/foo": "packages/foo",
     "packages/health": "packages/health",
-    "packages/ping": "packages/ping"
+    "packages/ping": "packages/ping",
+    "packages/unuseddep": "packages/unuseddep"
   },
   "semantic-release": {
     "executor": "@theunderscorer/nx-semantic-release:semantic-release"
