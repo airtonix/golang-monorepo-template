@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "plugins": ["@nx-go/nx-go"],
+  "plugins": [
+    "@nx-go/nx-go"
+  ],
   "affected": {
     "defaultBase": "master"
   },
@@ -8,19 +10,16 @@
     "appsDir": "apps",
     "libsDir": "packages"
   },
-  "implicitDependencies": {
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
-    },
-    ".eslintrc.json": "*",
-    "go.mod": "*"
-  },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
+      "runner": "nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "accessToken": "NmE1NWYzNGUtMjZhZC00NmZmLTkwZjUtM2JmZmY2OWFjZTA5fHJlYWQtd3JpdGU="
       }
     },
@@ -33,7 +32,25 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     }
+  },
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/go.mod"
+    ],
+    "production": [
+      "default"
+    ]
   }
 }
