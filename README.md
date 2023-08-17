@@ -25,7 +25,7 @@ $ just help
 ## Running Apps
 
 ```shell
-$ just serve one
+$ just serve app-one
 ```
 
 ## Generating Apps
@@ -46,8 +46,7 @@ $ just generate lib mynewlibname
 $ just nx ...
 ```
 
-# 
+## Other NX commands
 
 You're free to execute nx commands directly `./node_modules/nx ...`
 
-## Apps
