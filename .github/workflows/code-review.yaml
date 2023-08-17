@@ -35,13 +35,14 @@ jobs:
       - uses: ./.github/actions/setup-tooling
         with:
           SetupCommand: ./setup.sh
-      - uses: ./github/actions/setup-yarn
+
+      - uses: ./.github/actions/setup-yarn
 
       - run: just nx workspace-lint
 
       - run: just lint --parallel=3
 
-      - uses: ./github/actions/setup-os
+      - uses: ./.github/actions/setup-os
       - run: just test --parallel=3 --ci --code-coverage
 
       - run: just build --parallel=3
