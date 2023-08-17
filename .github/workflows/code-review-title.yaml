@@ -2,7 +2,7 @@ name: CodeReviewTitles
 
 on:
   pull_request:
-    types: ['opened', 'edited', 'reopened', 'synchronize']
+    types: ['opened', 'edited', 'reopened']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
