@@ -31,7 +31,7 @@ func TestHealthRoute(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(
 		t,
-		"{\"Hello\":\"Hello and welcome from works\"}",
+		"{\"Foo\":\"Bar: works\"}",
 		w.Body.String(),
 	)
 }
