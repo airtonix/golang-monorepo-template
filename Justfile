@@ -7,9 +7,6 @@ export PATH := justfile_directory() + "/node_modules/.bin:" + env_var('PATH')
 default:
     @just --choose
 
-something $FOO='bar':
-  @echo $FOO {{ stage }}
-
 help:
     @just --list
 
@@ -24,24 +21,27 @@ setup:
 version:
     multi-semantic-release --dry-run
 
-
+generate projecttype="lib" name="":
+    nx generate @nx-go/nx-go:{{projecttype}} {{name}}
 
 # build all the things
-build project="affected":
+build project="affected" *ARGS='':
     nx run-many \
         --target=build \
-        --all
+        --all \
+        -- {{ ARGS }}
 
 # lint changed packages
-lint project="affected":
+lint project="affected" *ARGS='':
     nx {{project}} \
-        --target=lint
+        --target=lint \
+        -- {{ ARGS }}
 
 # test changed packages
-test project="affected":
+test project="affected" *ARGS='':
     nx {{project}} \
     --target=test \
-    -- --ci --reporters=default --reporters=jest-junit
+    -- --ci --reporters=default --reporters=jest-junit {{ ARGS }}
 
 # test changed packages
 serve project="" config="":
@@ -64,10 +64,18 @@ clean:
     git clean -xdf
 
 # fix monorepo issues
-fix:
+tidy:
     @echo "👨‍⚕️ Fixing monorepo problems"
     syncpack format
     syncpack set-semver-ranges
+
+pr-check:
+    @echo "👨‍⚕️ Checking PR"
+    just tidy
+    just workspacelint
+    just lint
+    just test
+    just typecheck
 
 # nx shortcut
 nx *ARGS='':

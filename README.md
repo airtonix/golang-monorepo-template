@@ -9,7 +9,7 @@ A Golang monorepo using nx.dev
 # Setup
 
 1. Clone repo
-2. `./setup.sh`
+2. `./setup.sh` (this installs [asdf](https://asdf-vm.com/) and any plugins in `.tool-versions`, then installs the described tools)
 3. `just help`
 
 
@@ -21,11 +21,16 @@ $ just help
 
 # Development
 
+1. get setup ☝️
+2. add deps only to root package.json
+3. add go deps to individual `go.mod`
+4. run `just pr-check`
+
 
 ## Running Apps
 
 ```shell
-$ just serve one
+$ just serve app-one
 ```
 
 ## Generating Apps
@@ -46,8 +51,7 @@ $ just generate lib mynewlibname
 $ just nx ...
 ```
 
-# 
+## Other NX commands
 
 You're free to execute nx commands directly `./node_modules/nx ...`
 
-## Apps

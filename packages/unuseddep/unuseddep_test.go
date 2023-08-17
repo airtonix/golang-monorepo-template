@@ -1,4 +1,4 @@
-package health
+package unuseddep
 
 import (
 	"net/http"
@@ -10,16 +10,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHealthIsFactory(t *testing.T) {
-	handler := Check("works")
+func TestUnusedDepIsFactory(t *testing.T) {
+	handler := UnusedDep("works")
 
 	if reflect.TypeOf(handler).String() != "func(*gin.Context)" {
-		t.Error("Expected Health not of type")
+		t.Error("Expected UnusedDep not of type")
 	}
 }
 
 func TestHealthRoute(t *testing.T) {
-	handler := Check("works")
+	handler := UnusedDep("works")
 
 	r := gin.Default()
 	r.GET("/test", handler)
@@ -31,7 +31,7 @@ func TestHealthRoute(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 	assert.Equal(
 		t,
-		"{\"Hello\":\"Hello and welcome from works\"}",
+		"{\"UnusedDep\":\"UnusedDep: works\"}",
 		w.Body.String(),
 	)
 }

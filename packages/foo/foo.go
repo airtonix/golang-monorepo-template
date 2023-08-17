@@ -1,4 +1,4 @@
-package health
+package foo
 
 import (
 	"net/http"

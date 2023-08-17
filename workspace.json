@@ -2,9 +2,12 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "apps/one": "apps/one",
-    "apps/two": "apps/two",
-    "packages/health": "packages/health"
+    "app-one": "apps/one",
+    "app-two": "apps/two",
+    "package-foo": "packages/foo",
+    "package-health": "packages/health",
+    "package-ping": "packages/ping",
+    "package-unuseddep": "packages/unuseddep"
   },
   "semantic-release": {
     "executor": "@theunderscorer/nx-semantic-release:semantic-release"

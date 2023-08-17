@@ -35,13 +35,17 @@ jobs:
       - uses: ./.github/actions/setup-tooling
         with:
           SetupCommand: ./setup.sh
-      - uses: ./github/actions/setup-yarn
+
+      - uses: ./.github/actions/setup-yarn
 
       - run: just nx workspace-lint
 
-      - run: just lint --parallel=3
+      - run: just lint affected --parallel=3
 
-      - uses: ./github/actions/setup-os
-      - run: just test --parallel=3 --ci --code-coverage
+      - run: echo "::add-matcher::./.github/problem-matchers/go.json"
 
-      - run: just build --parallel=3
+      - uses: ./.github/actions/setup-os
+      - run: just test affected --parallel=3 --ci --code-coverage
+      - run: just build affected --parallel=3
+
+      - run: echo "::remove-matcher owner=go::"

@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "npmScope": "go-monorepo-nx",
+  "plugins": ["@nx-go/nx-go"],
   "affected": {
     "defaultBase": "master"
   },
@@ -20,21 +20,20 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "accessToken": "NmE1NWYzNGUtMjZhZC00NmZmLTkwZjUtM2JmZmY2OWFjZTA5fHJlYWQtd3JpdGU="
+      }
+    },
+    "go": {
+      "runner": "@nx-go/nx-go",
+      "options": {
+        "useGoWork": true
       }
     }
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     }
   }
 }
