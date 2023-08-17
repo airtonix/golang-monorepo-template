@@ -66,6 +66,7 @@ jobs:
           command: github-release
           bump-patch-for-minor-pre-major: true
           bump-minor-pre-major: true
+          separate-pull-requests: false
 
       - uses: actions/checkout@v2
         if: ${{ steps.tag-release.outputs.releases_created }}
@@ -99,3 +100,4 @@ jobs:
           package-name: ${{ matrix.package }}
           monorepo-tags: true
           command: release-pr
+          separate-pull-requests: false
