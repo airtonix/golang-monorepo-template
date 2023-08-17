@@ -7,9 +7,6 @@ export PATH := justfile_directory() + "/node_modules/.bin:" + env_var('PATH')
 default:
     @just --choose
 
-something $FOO='bar':
-  @echo $FOO {{ stage }}
-
 help:
     @just --list
 
@@ -67,10 +64,18 @@ clean:
     git clean -xdf
 
 # fix monorepo issues
-fix:
+tidy:
     @echo "👨‍⚕️ Fixing monorepo problems"
     syncpack format
     syncpack set-semver-ranges
+
+pr-check:
+    @echo "👨‍⚕️ Checking PR"
+    just tidy
+    just workspacelint
+    just lint
+    just test
+    just typecheck
 
 # nx shortcut
 nx *ARGS='':
