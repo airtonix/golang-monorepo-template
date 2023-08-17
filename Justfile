@@ -27,21 +27,23 @@ version:
 
 
 # build all the things
-build project="affected":
+build project="affected" *ARGS='':
     nx run-many \
         --target=build \
-        --all
+        --all \
+        -- {{ ARGS }}
 
 # lint changed packages
-lint project="affected":
+lint project="affected" *ARGS='':
     nx {{project}} \
-        --target=lint
+        --target=lint \
+        -- {{ ARGS }}
 
 # test changed packages
-test project="affected":
+test project="affected" *ARGS='':
     nx {{project}} \
     --target=test \
-    -- --ci --reporters=default --reporters=jest-junit
+    -- --ci --reporters=default --reporters=jest-junit {{ ARGS }}
 
 # test changed packages
 serve project="" config="":

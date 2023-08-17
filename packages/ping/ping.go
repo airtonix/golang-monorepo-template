@@ -1,4 +1,4 @@
-package health
+package ping
 
 import (
 	"net/http"

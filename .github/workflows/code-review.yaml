@@ -40,9 +40,9 @@ jobs:
 
       - run: just nx workspace-lint
 
-      - run: just lint --parallel=3
+      - run: just lint affected --parallel=3
 
       - uses: ./.github/actions/setup-os
-      - run: just test --parallel=3 --ci --code-coverage
+      - run: just test affected --parallel=3 --ci --code-coverage
 
-      - run: just build --parallel=3
+      - run: just build affected --parallel=3
