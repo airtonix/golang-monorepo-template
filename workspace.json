@@ -4,7 +4,9 @@
   "projects": {
     "apps/one": "apps/one",
     "apps/two": "apps/two",
-    "packages/health": "packages/health"
+    "packages/health": "packages/health",
+    "packages/foo": "packages/foo",
+    "packages/ping": "packages/ping"
   },
   "semantic-release": {
     "executor": "@theunderscorer/nx-semantic-release:semantic-release"
